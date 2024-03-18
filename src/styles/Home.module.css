@@ -1,8 +1,8 @@
 .main {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
+  margin-top: -30px;
   padding: 6rem;
   min-height: 100vh;
 }
@@ -45,6 +45,34 @@
   max-width: var(--max-width);
   width: 100%;
 }
+
+.title {
+  margin-top: -60px;
+  font-size: 3rem; /* Tamaño grande para un impacto visual */
+  font-weight: 700; /* Negrita para enfatizar */
+  text-align: center;
+  color: #0ff; /* Color cyan neón */
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5), /* Sombra cyan */
+               0 0 20px rgba(0, 255, 255, 0.5), /* Sombra más pronunciada cyan */
+               0 0 40px rgba(0, 255, 255, 0.5); /* Sombra cyan intensa */
+  animation: flicker 1.5s infinite alternate; /* Animación de parpadeo */
+
+  /* Fuente futurista o con elementos tecnológicos */
+  font-family: 'Roboto', sans-serif;
+}
+
+@keyframes flicker {
+  from {
+    opacity: 1; /* Visible */
+  }
+  to {
+    opacity: 0.8; /* Ligeramente menos visible */
+  }
+}
+
+
 
 .card {
   padding: 1rem 1.2rem;
