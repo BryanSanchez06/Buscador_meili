@@ -7,11 +7,7 @@ const SearchBar = ({ onSearch }) => {
 
   const handleChange = (e) => {
     setQuery(e.target.value);
-    if (e.target.value === '') {
-      onSearch('');  // Limpia los resultados de la búsqueda cuando el campo de búsqueda está vacío
-    } else {
-      onSearch(e.target.value);
-    }
+    onSearch(e.target.value);
   }
 
   return (
@@ -24,6 +20,9 @@ const SearchBar = ({ onSearch }) => {
           onChange={handleChange}
           className={styles.searchInput}
         />
+        <button type="submit" className={styles.searchButton}>
+          Buscar
+        </button>
       </form>
     </div>
   );

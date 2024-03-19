@@ -1,32 +1,40 @@
-import React from 'react';
+// pages/index.js
+import React, { useEffect } from 'react';
 import Head from "next/head";
 import Image from "next/image";
 import styles from "@/styles/Home.module.css";
 import SearchBar from "@/pages/SearchBar";
+import { MeiliSearch } from 'meilisearch'
+
+const client = new MeiliSearch({
+  host: 'https://priscete.cloud',
+  apiKey: 'Priscete_Genesis5C',
+})
+
+const index = client.index('Users_uid')
 
 export default function Home() {
   const [searchResults, setSearchResults] = React.useState([]);
-  
-  const handleSearch = async (query) => {
-    if (query === '') {
-      setSearchResults([]);  
-    } else {
-      try {
-        const response = await fetch('/busquedas.json'); // Suponiendo que el archivo está en la carpeta public
-        const data = await response.json();
+  const [query, setQuery] = React.useState('');
 
-        // Realizar la búsqueda en los datos cargados del JSON
-        const results = data.filter(item =>
-          item.title.toLowerCase().includes(query.toLowerCase()) ||
-          item.description.toLowerCase().includes(query.toLowerCase())
-        );
-        setSearchResults(results);
-      } catch (error) {
-        console.error('Error al cargar el archivo JSON:', error);
-        setSearchResults([]); 
+  useEffect(() => {
+    const fetchResults = async () => {
+      if (query === '') {
+        setSearchResults([]);  
+      } else {
+        try {
+          // Meilisearch is typo-tolerant:
+          const search = await index.search(query)
+          setSearchResults(search.hits);
+        } catch (error) {
+          console.error('Error al realizar la búsqueda con MeiliSearch:', error);
+          setSearchResults([]); 
+        }
       }
-    }
-  };
+    };
+
+    fetchResults();
+  }, [query]);
 
   return (
     <>
@@ -48,18 +56,15 @@ export default function Home() {
           />
         </div>
         <h1 className={styles.title}>Priscete</h1>
-        <SearchBar onSearch={handleSearch} />
+        <SearchBar onSearch={setQuery} />
         <div className={styles.resultsContainer}>
           {searchResults.map(item => (
             <div key={item.id} className={styles.resultItem}>
-              <h2>{item.title}</h2>
-              <p>{item.description}</p>
-              <img src={item.img} alt={item.title} className={styles.image} />
-              <p>{item.date}</p>
-              <a href={item.href}>{item.title}</a>
-              <p>{item.merchant}</p>
-              <p>{item.price}</p>
-              <p>{item.featured ? 'Destacado' : 'No destacado'}</p>
+              <h2>ID: {item.id}</h2>
+              <p>Nombre: {item.first_name} {item.last_name}</p>
+              <p>Email: {item.email}</p>
+              <p>Género: {item.gender}</p>
+              <p>Dirección IP: {item.ip_address}</p>
             </div>
           ))}
         </div>

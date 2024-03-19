@@ -261,10 +261,10 @@
 }
 
 .resultItem {
-  background-color: #f3f3f5;
-  border-radius: 8px;
-  padding: 15px;
-  margin-bottom: 15px;
+  background-color: #80ecf433 0deg;
+  border-radius: 25px;
+  padding: 25px;
+  margin-bottom: 25px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
   transition: background-color 0.3s, transform 0.3s;
 }
@@ -275,19 +275,19 @@
 }
 
 .resultItem h2 {
-  font-size: 1.2rem;
+  font-size: 2rem;
   margin-bottom: 5px;
 }
 
 .resultItem p {
   font-size: 1rem;
-  color: #495057; 
+  color: white; 
 }
 
 
 .resultItem img {
-  max-width: 40%;
-  max-height: 60px; 
+  max-width: 30%;
+  max-height: 80px; 
   object-fit: cover; 
 }
 
