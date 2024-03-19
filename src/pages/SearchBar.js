@@ -5,25 +5,25 @@ import styles from '@/styles/SearchBar.module.css';
 const SearchBar = ({ onSearch }) => {
   const [query, setQuery] = React.useState('');
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSearch(query);
-    setQuery('');
+  const handleChange = (e) => {
+    setQuery(e.target.value);
+    if (e.target.value === '') {
+      onSearch('');  // Limpia los resultados de la búsqueda cuando el campo de búsqueda está vacío
+    } else {
+      onSearch(e.target.value);
+    }
   }
 
   return (
     <div className={styles.searchContainer}>
-      <form onSubmit={handleSubmit} className={styles.searchForm}>
+      <form onSubmit={(e) => e.preventDefault()} className={styles.searchForm}>
         <input 
           type="text" 
           placeholder="Buscar..."
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={handleChange}
           className={styles.searchInput}
         />
-        <button type="submit" className={styles.searchButton}>
-          Buscar
-        </button>
       </form>
     </div>
   );

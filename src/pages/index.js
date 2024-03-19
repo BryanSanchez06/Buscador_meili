@@ -1,4 +1,3 @@
-// pages/index.js
 import React from 'react';
 import Head from "next/head";
 import Image from "next/image";
@@ -8,23 +7,25 @@ import SearchBar from "@/pages/SearchBar";
 export default function Home() {
   const [searchResults, setSearchResults] = React.useState([]);
   
-  const handleSearch = (query) => {
-    console.log(`Buscando: ${query}`);
-    // Cargar los datos del archivo JSON
-    fetch('/busquedas.json') // Suponiendo que el archivo está en la carpeta public
-      .then(response => response.json())
-      .then(data => {
+  const handleSearch = async (query) => {
+    if (query === '') {
+      setSearchResults([]);  
+    } else {
+      try {
+        const response = await fetch('/busquedas.json'); // Suponiendo que el archivo está en la carpeta public
+        const data = await response.json();
+
         // Realizar la búsqueda en los datos cargados del JSON
         const results = data.filter(item =>
           item.title.toLowerCase().includes(query.toLowerCase()) ||
           item.description.toLowerCase().includes(query.toLowerCase())
         );
         setSearchResults(results);
-      })
-      .catch(error => {
+      } catch (error) {
         console.error('Error al cargar el archivo JSON:', error);
-        setSearchResults([]); // Limpiar los resultados en caso de error
-      });
+        setSearchResults([]); 
+      }
+    }
   };
 
   return (
@@ -48,11 +49,17 @@ export default function Home() {
         </div>
         <h1 className={styles.title}>Priscete</h1>
         <SearchBar onSearch={handleSearch} />
-        <div>
+        <div className={styles.resultsContainer}>
           {searchResults.map(item => (
-            <div key={item.id}>
+            <div key={item.id} className={styles.resultItem}>
               <h2>{item.title}</h2>
               <p>{item.description}</p>
+              <img src={item.img} alt={item.title} className={styles.image} />
+              <p>{item.date}</p>
+              <a href={item.href}>{item.title}</a>
+              <p>{item.merchant}</p>
+              <p>{item.price}</p>
+              <p>{item.featured ? 'Destacado' : 'No destacado'}</p>
             </div>
           ))}
         </div>
